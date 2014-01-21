@@ -21,19 +21,12 @@ limitations under the License.
 import sys
 import re
 
-DEBUG = True
+DEBUG = False
 
 def unique(values):
     unique_values = ''.join(set(values))
     # We allow any number of 0's as placeholders, so we check that the unique length without 0's
     # is the same as the original length without 0's - if it is, then original input is unique :)
-#    uv_len = len(unique_values)
-#    uv_0 = unique_values.count('0')
-#    uv_len = uv_len - uv_0
-#    val_len = len(values)
-#    val_0 = values.count('0')
-#    val_len = val_len - val_0
-#    result = 
     return (len(unique_values) - unique_values.count('0')) == (len(values) - values.count('0'))
 
 def col(input_grid, index):
@@ -156,21 +149,14 @@ def missing_entries(values):
         missing += '9'
     return missing        
 
-# Merges potential values for a cell from its row, column and grid potentials, into a single set of
+# Merges potential values for a cell from its row, column and grid potentials, into a single set.
+# A potential must exist in all 3 for it to be valid - if it doesn't exist in one, then it can't exist in this cell.
 def merge_potentials(vals_1, vals_2, vals_3):
     results = ''
     for val in vals_1:
-        if vals_2.count(val) == 0 and vals_3.count(val) == 0:
+        if vals_2.count(val) == 1 and vals_3.count(val) == 1:
             results += val
-    for val in vals_2:
-        if vals_1.count(val) == 0 and vals_3.count(val) == 0:
-            results += val
-    for val in vals_3:
-        if vals_1.count(val) == 0 and vals_2.count(val) == 0:
-            results += val
-    # We may not have any unique entries. In this case, any of these is a potential.
-    results = ''.join(set(vals_1 + vals_2 + vals_3))
-    return results        
+    return results
             
 
 input_grid = read_input_grid()
@@ -200,6 +186,11 @@ while not finished(input_grid):
     grid_potentials.append(missing_entries(bot_mid(input_grid)))
     grid_potentials.append(missing_entries(bot_right(input_grid)))
     
+    if DEBUG:
+        print row_potentials
+        print col_potentials
+        print grid_potentials
+    
     # Each cell has a set of 'potential' entries for its row, and for its column, and for its grid.
     # Must remove any that don't match.
     # For example if an element matched 1,4,5 in its row, 1,4,6 in its column and 1,3,5 in its grid,
@@ -214,10 +205,15 @@ while not finished(input_grid):
                 # This cell has already been populated. This is the only potential entry in this cell.
                 cell_potentials = input_grid[row_index][col_index]
             else:
-                grid_index = (col_index % 3) + 3 * (row_index % 3)
+                grid_index = (col_index / 3) + 3 * (row_index / 3)
+                if DEBUG:
+                    print grid_index
                 cell_potentials = merge_potentials(row_potentials[row_index], col_potentials[col_index], grid_potentials[grid_index])
             row_individual_potentials.append(cell_potentials)
         potentials_grid.append(row_individual_potentials)
+        
+    if DEBUG:
+        print potentials_grid
         
     # Now we have our set of potential entries for each cell. Can we cancel out any more? Sure!
     # If a cell is the only cell in its row, column, or grid which contains a given potential element,
@@ -315,6 +311,7 @@ while not finished(input_grid):
                 input_grid[row_index][col_index] = str(potentials_grid[row_index][col_index])
     
     if DEBUG:
+        print potentials_grid
         print input_grid
 
 print("\nDone.")
