@@ -23,6 +23,25 @@ import re
 
 DEBUG = False
 
+# Pretty prints a 9x9 grid like so:
+# -------
+# |1|2|3|
+# -------
+# |4|5|6|
+# -------
+# |7|8|9|
+# -------
+def pretty_print_grid(grid):
+    for row_index in range(0,19): # 2 x 9 + 1
+        for col_index in range(0,19):
+            if row_index % 2 == 0:
+                sys.stdout.write('-')
+            elif col_index % 2 == 0:
+                sys.stdout.write('|')
+            else:
+                sys.stdout.write(grid[row_index / 2][col_index / 2])
+        print # Newline at the end of the row
+
 def unique(values):
     unique_values = ''.join(set(values))
     # We allow any number of 0's as placeholders, so we check that the unique length without 0's
@@ -161,7 +180,7 @@ def merge_potentials(vals_1, vals_2, vals_3):
 
 input_grid = read_input_grid()
 print("Input:")
-print(input_grid)
+pretty_print_grid(input_grid)
 sys.stdout.write("Processing...")
 while not finished(input_grid):
     sys.stdout.write(".")
@@ -316,7 +335,7 @@ while not finished(input_grid):
 
 print("\nDone.")
 print("Result:")
-print(input_grid)
+pretty_print_grid(input_grid)
             
 
             
