@@ -8,6 +8,7 @@ I've done no research on efficient algorithms for doing this, and wrote this in 
 At present, it doesn't work - I seem to have some sort of catastrophic bug in my logic where the results aren't being updated from the original input. Oops.
 
 ## Usage
+_Note_: Written for and tested on Python 2.7.
 
 ```
 git clone https://github.com/adamsp/sudoku-solver.git
