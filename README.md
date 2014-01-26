@@ -5,7 +5,7 @@ This is a naive attempt at a Sudoku Solver in Python. It takes input as 9 lines 
 
 I've done no research on efficient algorithms for doing this, and wrote this in about 2 hours one evening, mainly to play with a bit of Python (which I haven't touched in some time), and because I've always wanted to write a Sudoku solver.
 
-At present, it doesn't work - I seem to have some sort of catastrophic bug in my logic where the results aren't being updated from the original input. Oops.
+Now also available [as a service](https://github.com/adamsp/sudoku-solver-gae).
 
 ## Usage
 _Note_: Written for and tested on Python 2.7.
