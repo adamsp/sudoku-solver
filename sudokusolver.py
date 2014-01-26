@@ -85,6 +85,12 @@ def bot_right(input_grid):
     return input_grid[6][6:] + input_grid[7][6:] + input_grid[8][6:]
     
 def validate_user_input_grid(input_grid):
+    for col_index in range(0,9):
+        column = col(input_grid, col_index)
+        if not unique(column):
+            print("Invalid column - no duplicate entries allowed, except 0 as placeholder.")
+            return False
+        
     if not unique(top_left(input_grid)):
         print "Your top left 3x3 has duplicate entries."
     elif not unique(top_mid(input_grid)):
@@ -108,7 +114,7 @@ def validate_user_input_grid(input_grid):
     return False
 
 input_invalid_line_pattern = re.compile("[^0-9]")
-def validate_user_input_line(input_grid, user_input):
+def validate_user_input_line(user_input):
     if len(user_input) != 9:
         print("Invalid user_input - requires 9 digits.")
     elif input_invalid_line_pattern.match(user_input):
@@ -127,7 +133,7 @@ def read_input_grid():
         if user_input == '0':
             print("Exiting.")
             sys.exit()
-        elif validate_user_input_line(input_grid, user_input):
+        elif validate_user_input_line(user_input):
             # Have to make an array out of the string here, cos we can't directly update an index later if we don't.
             input_row = []
             for i in user_input:
